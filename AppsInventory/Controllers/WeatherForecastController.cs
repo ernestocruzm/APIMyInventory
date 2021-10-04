@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace AppsInventory.Controllers
 {
+    //test
     [ApiController]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
