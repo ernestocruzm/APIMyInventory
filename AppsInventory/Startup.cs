@@ -1,7 +1,9 @@
+using AppsInventory.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -16,9 +18,12 @@ namespace AppsInventory
 {
     public class Startup
     {
+
+        public string ConnectionString { get; set; }
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            ConnectionString = Configuration.GetConnectionString("InventoryDB");
         }
 
         public IConfiguration Configuration { get; }
@@ -28,6 +33,14 @@ namespace AppsInventory
         {
 
             services.AddControllers();
+
+            //Configure DBContext with SQL
+            //nstall-Package Microsoft.EntityFrameworkCore.SqlServer
+            //Install - Package Microsoft.EntityframeworkCore.Tools
+
+            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(ConnectionString));
+
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "AppsInventory", Version = "v1" });
